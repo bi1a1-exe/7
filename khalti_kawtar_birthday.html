@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joyeux Anniversaire Dr. Kawtar Hrnaf</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti & Tone.js -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        burgundy: {
+                            900: '#1a040b',
+                            800: '#320b17',
+                            700: '#4d0e22',
+                            600: '#781533'
+                        },
+                        emeraldDeep: '#061a14',
+                        gold: {
+                            100: '#fff3c4',
+                            300: '#f6d365',
+                            400: '#fda085',
+                            500: '#d4af37',
+                            600: '#aa8c2c'
+                        }
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        cursive: ['Great Vibes', 'cursive'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background: radial-gradient(circle at center, #2e0814 0%, #120207 70%, #080104 100%);
+            color: #fce7f3;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Golden shimmer text effect */
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fff3c4 0%, #f6d365 30%, #d4af37 70%, #aa8c2c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Glassmorphism containers */
+        .glass-card {
+            background: rgba(45, 10, 24, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(212, 175, 55, 0.6);
+            box-shadow: 0 15px 35px 0 rgba(212, 175, 55, 0.2);
+        }
+
+        /* Candle Flame Animation */
+        .flame {
+            width: 14px;
+            height: 26px;
+            background: linear-gradient(#fff, #ff9d00, #ff0000);
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 15px #ff9d00, 0 0 25px #ff0000;
+            animation: flicker 0.15s infinite alternate ease-in-out;
+            transform-origin: center bottom;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); opacity: 0.95; }
+            100% { transform: scale(1.15) rotate(2deg); opacity: 1; }
+        }
+
+        .flame-extinguished {
+            display: none !important;
+        }
+
+        .smoke {
+            position: absolute;
+            width: 6px;
+            height: 18px;
+            background: rgba(200, 200, 200, 0.6);
+            border-radius: 50%;
+            filter: blur(4px);
+            animation: rise 1.5s ease-out forwards;
+        }
+
+        @keyframes rise {
+            0% { opacity: 0.8; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-40px) scale(3); }
+        }
+
+        /* Floating elements background */
+        .floating-sparkle {
+            position: absolute;
+            pointer-events: none;
+            animation: floatUp 8s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #120207;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #781533;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4af37;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen text-slate-100 selection:bg-gold-500 selection:text-burgundy-900">
+
+    <!-- Floating Sparkles Background Layer -->
+    <div id="sparkle-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+    <!-- Audio Control Panel -->
+    <div class="fixed top-5 right-5 z-50 flex items-center gap-3">
+        <button id="music-btn" onclick="toggleAudio()" class="glass-card px-4 py-2.5 rounded-full flex items-center gap-2 text-gold-300 hover:text-white border border-gold-500/40 hover:border-gold-400 transition duration-300 shadow-lg text-sm font-semibold">
+            <i id="music-icon" class="fas fa-music animate-pulse"></i>
+            <span id="music-text">Mélodie d'Anniversaire</span>
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="relative z-10 max-w-5xl mx-auto px-4 py-12 md:py-16 space-y-20">
+
+        <!-- HERO SECTION -->
+        <header class="text-center space-y-6 pt-6">
+            <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card border border-gold-500/30 text-gold-300 text-sm tracking-widest uppercase font-semibold">
+                <i class="fas fa-crown text-gold-400"></i>
+                11 Novembre • Journée d'Exception
+                <i class="fas fa-crown text-gold-400"></i>
+            </div>
+            
+            <h1 class="font-cinzel text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white leading-tight">
+                Joyeux 47ème Anniversaire <br>
+                <span class="gold-gradient-text font-cursive text-5xl sm:text-7xl md:text-8xl block mt-2 capitalize">
+                    Dr. Kawtar Hrnaf
+                </span>
+            </h1>
+
+            <p class="max-w-2xl mx-auto text-base sm:text-lg text-pink-100/80 font-light leading-relaxed">
+                Une journée mémorable dédiée à une femme distinguée, passionnée et dotée d'une grande bonté.
+            </p>
+
+            <div class="pt-4 flex justify-center">
+                <a href="#cake-section" class="inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-gradient-to-r from-gold-600 via-gold-500 to-gold-600 text-burgundy-900 font-bold hover:shadow-[0_0_25px_rgba(212,175,55,0.6)] transition-all duration-300 transform hover:-translate-y-1">
+                    <span>Souffler les Bougies</span>
+                    <i class="fas fa-arrow-down"></i>
+                </a>
+            </div>
+        </header>
+
+        <!-- DENTIST SPECIAL BADGE / DEDICATION -->
+        <section class="glass-card rounded-3xl p-6 md:p-10 relative overflow-hidden text-center md:text-left">
+            <div class="absolute -right-10 -bottom-10 opacity-10 text-gold-300 pointer-events-none">
+                <i class="fas fa-tooth text-9xl"></i>
+            </div>
+            <div class="grid md:grid-cols-12 gap-8 items-center">
+                <div class="md:col-span-3 flex justify-center">
+                    <div class="relative w-36 h-36 rounded-full p-1 bg-gradient-to-tr from-gold-500 to-pink-500 shadow-2xl flex items-center justify-center">
+                        <div class="w-full h-full rounded-full bg-burgundy-900 flex flex-col items-center justify-center text-gold-400 p-2 text-center">
+                            <i class="fas fa-tooth text-4xl mb-1 text-gold-300"></i>
+                            <span class="font-cinzel text-xs font-bold tracking-wider text-slate-200">DOCTEUR</span>
+                            <span class="font-cursive text-xl text-gold-300">Dentiste</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:col-span-9 space-y-3">
+                    <div class="flex items-center justify-center md:justify-start gap-2 text-gold-400 font-semibold text-sm">
+                        <i class="fas fa-sparkles"></i>
+                        <span>L'Art de Sculpter les Sourires</span>
+                    </div>
+                    <h2 class="font-cinzel text-2xl sm:text-3xl font-bold text-white">
+                        À une Chirurgien-Dentiste Remarquable
+                    </h2>
+                    <p class="text-pink-100/80 leading-relaxed text-sm sm:text-base">
+                        Au quotidien, vous illuminez des visages et redonnez confiance et bien-être grâce à votre savoir-faire précieux. En ce jour spécial, que la vie vous offre autant de motifs de sourire que vous en donnez autour de vous !
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW INTERACTIVE SLIDER / CAROUSEL SECTION -->
+        <section class="space-y-6">
+            <div class="text-center space-y-2">
+                <span class="text-gold-400 font-semibold text-sm uppercase tracking-wider"><i class="fas fa-images mr-2"></i>Galerie d'Hommages</span>
+                <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-white">Pensées & Vœux d'Exception</h2>
+            </div>
+
+            <!-- Carousel Box -->
+            <div class="relative glass-card rounded-3xl p-8 sm:p-12 overflow-hidden border border-gold-500/40">
+                <div id="slides-wrapper" class="relative min-h-[220px] flex items-center justify-center">
+                    <!-- Slide 1 -->
+                    <div class="slide-item transition-all duration-700 ease-in-out opacity-100 scale-100 text-center space-y-4 max-w-2xl">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-gold-500/10 border border-gold-400/30 flex items-center justify-center text-gold-300 text-xl">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <h3 class="font-cinzel text-2xl font-bold text-gold-300">Une Élégance Intemporelle</h3>
+                        <p class="text-pink-100/90 text-sm sm:text-base leading-relaxed">
+                            Célébrer 47 ans, c'est honorer un parcours empreint de sagesse, de raffinement et de générosité. Que cette nouvelle année vous apporte sérénité et accomplissement.
+                        </p>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="slide-item transition-all duration-700 ease-in-out opacity-0 scale-95 hidden text-center space-y-4 max-w-2xl">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-gold-500/10 border border-gold-400/30 flex items-center justify-center text-gold-300 text-xl">
+                            <i class="fas fa-smile-beam"></i>
+                        </div>
+                        <h3 class="font-cinzel text-2xl font-bold text-gold-300">Créatrice de Sourires</h3>
+                        <p class="text-pink-100/90 text-sm sm:text-base leading-relaxed">
+                            Votre dévouement professionnel et la perfection de vos soins dentaires inspirent le plus profond respect. Que votre métier continue d'être une source constante d'épanouissement.
+                        </p>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="slide-item transition-all duration-700 ease-in-out opacity-0 scale-95 hidden text-center space-y-4 max-w-2xl">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-gold-500/10 border border-gold-400/30 flex items-center justify-center text-gold-300 text-xl">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3 class="font-cinzel text-2xl font-bold text-gold-300">Chaleur & Bienveillance</h3>
+                        <p class="text-pink-100/90 text-sm sm:text-base leading-relaxed">
+                            Votre présence chaleureuse et votre cœur immense illuminent le quotidien de vos proches. Merci pour toute cette bienveillance constante.
+                        </p>
+                    </div>
+
+                    <!-- Slide 4 -->
+                    <div class="slide-item transition-all duration-700 ease-in-out opacity-0 scale-95 hidden text-center space-y-4 max-w-2xl">
+                        <div class="w-12 h-12 mx-auto rounded-full bg-gold-500/10 border border-gold-400/30 flex items-center justify-center text-gold-300 text-xl">
+                            <i class="fas fa-glass-cheers"></i>
+                        </div>
+                        <h3 class="font-cinzel text-2xl font-bold text-gold-300">Santé & Prospérité</h3>
+                        <p class="text-pink-100/90 text-sm sm:text-base leading-relaxed">
+                            Je vous souhaite une santé de fer, une réussite éclatante et des moments inoubliables entourée de tous ceux qui vous sont chers.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Navigation Controls -->
+                <button onclick="prevSlide()" class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-burgundy-900/80 border border-gold-500/40 text-gold-300 hover:text-white hover:border-gold-300 flex items-center justify-center transition">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button onclick="nextSlide()" class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-burgundy-900/80 border border-gold-500/40 text-gold-300 hover:text-white hover:border-gold-300 flex items-center justify-center transition">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+
+                <!-- Dots Indicator -->
+                <div class="flex justify-center gap-2 mt-6">
+                    <button onclick="setSlide(0)" class="slide-dot w-3 h-3 rounded-full bg-gold-400 transition-all duration-300"></button>
+                    <button onclick="setSlide(1)" class="slide-dot w-3 h-3 rounded-full bg-gold-500/30 transition-all duration-300"></button>
+                    <button onclick="setSlide(2)" class="slide-dot w-3 h-3 rounded-full bg-gold-500/30 transition-all duration-300"></button>
+                    <button onclick="setSlide(3)" class="slide-dot w-3 h-3 rounded-full bg-gold-500/30 transition-all duration-300"></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE BIRTHDAY CAKE SECTION -->
+        <section id="cake-section" class="glass-card rounded-3xl p-8 sm:p-12 text-center space-y-8 relative">
+            <div class="space-y-2">
+                <span class="text-gold-400 font-semibold text-sm uppercase tracking-wider"><i class="fas fa-magic mr-2"></i>Moment Interactif</span>
+                <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-white">Faites un Vœu !</h2>
+                <p id="cake-instruction" class="text-pink-200/90 text-sm sm:text-base">
+                    Cliquez sur les bougies (ou le gâteau) pour souffler vos <span class="text-gold-300 font-bold">47 bougies</span> !
+                </p>
+            </div>
+
+            <!-- THE CAKE CONTAINER -->
+            <div class="relative py-8 flex flex-col items-center justify-center">
+                <!-- Candles Wrapper -->
+                <div id="candles-container" class="flex gap-6 sm:gap-10 mb-[-12px] z-20 cursor-pointer" onclick="extinguishCandles()">
+                    <!-- Candle 1 (4) -->
+                    <div class="relative flex flex-col items-center group">
+                        <div id="flame-1" class="flame"></div>
+                        <div class="w-5 h-16 bg-gradient-to-b from-pink-300 via-pink-400 to-purple-600 rounded-t-md shadow-md flex items-center justify-center font-bold text-xs text-burgundy-900">
+                            4
+                        </div>
+                    </div>
+
+                    <!-- Center Tooth Candle Icon Decor -->
+                    <div class="relative flex flex-col items-center group self-end mb-2">
+                        <div id="flame-star" class="flame bg-gradient-to-t from-gold-500 to-white"></div>
+                        <div class="w-6 h-12 bg-gradient-to-b from-gold-300 to-gold-600 rounded-t-md flex items-center justify-center text-burgundy-900">
+                            <i class="fas fa-tooth text-xs"></i>
+                        </div>
+                    </div>
+
+                    <!-- Candle 2 (7) -->
+                    <div class="relative flex flex-col items-center group">
+                        <div id="flame-2" class="flame"></div>
+                        <div class="w-5 h-16 bg-gradient-to-b from-pink-300 via-pink-400 to-purple-600 rounded-t-md shadow-md flex items-center justify-center font-bold text-xs text-burgundy-900">
+                            7
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cake Structure -->
+                <div class="w-64 sm:w-80 cursor-pointer" onclick="extinguishCandles()">
+                    <!-- Top Tier -->
+                    <div class="h-20 bg-gradient-to-r from-burgundy-700 via-pink-900 to-burgundy-700 rounded-t-3xl border-t-4 border-gold-400/60 relative overflow-hidden flex items-center justify-center shadow-lg">
+                        <div class="absolute inset-x-0 top-0 h-4 bg-gradient-to-b from-white/30 to-transparent"></div>
+                        <!-- Frosting drips -->
+                        <div class="absolute top-0 w-full flex justify-around text-pink-200/40 text-xs">
+                            <i class="fas fa-heart"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-tooth"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <span class="font-cursive text-2xl sm:text-3xl text-gold-300 font-bold z-10">Dr. Kawtar</span>
+                    </div>
+                    <!-- Bottom Tier -->
+                    <div class="h-24 bg-gradient-to-r from-burgundy-800 via-burgundy-600 to-burgundy-800 rounded-b-xl border-t-2 border-gold-500/40 relative shadow-2xl flex items-center justify-center">
+                        <div class="flex items-center gap-4 text-gold-400/60">
+                            <i class="fas fa-crown text-lg"></i>
+                            <span class="font-cinzel tracking-widest text-xs font-semibold text-pink-200">11 • 11 • 1979</span>
+                            <i class="fas fa-crown text-lg"></i>
+                        </div>
+                    </div>
+                    <!-- Cake Plate -->
+                    <div class="w-72 sm:w-96 h-4 bg-gradient-to-r from-gold-600 via-gold-300 to-gold-600 mx-auto rounded-full shadow-2xl -mt-1 border-t border-white/40"></div>
+                </div>
+            </div>
+
+            <div id="wish-status-box" class="min-h-[50px] flex items-center justify-center">
+                <button onclick="extinguishCandles()" class="px-6 py-2.5 rounded-full bg-burgundy-700 hover:bg-burgundy-600 text-gold-300 border border-gold-500/40 font-semibold text-sm transition duration-300">
+                    <i class="fas fa-wind mr-2"></i> Souffler les bougies
+                </button>
+            </div>
+        </section>
+
+        <!-- CARDS & MESSAGES SECTION -->
+        <section class="space-y-8">
+            <div class="text-center space-y-2">
+                <span class="text-gold-400 font-semibold text-sm uppercase tracking-wider"><i class="fas fa-heart mr-2"></i> Messages d'Estime</span>
+                <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-white">Vœux du Cœur</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                
+                <!-- Card 1: Vœux Généraux et Respect -->
+                <div class="glass-card glass-card-hover rounded-3xl p-8 space-y-4 relative overflow-hidden">
+                    <div class="w-12 h-12 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-xl mb-4">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <span class="text-xs font-bold text-gold-400 tracking-wider uppercase">Respect & Admiration</span>
+                    <h3 class="font-cinzel text-xl font-bold text-white">Chère Dr. Kawtar</h3>
+                    <p class="text-pink-100/80 leading-relaxed text-sm">
+                        En cette belle journée du 11 novembre, je tiens à vous exprimer mes voeux les plus sincères. Que cette année soit synonyme de bonheur intense, de sérénité et d'épanouissement personnel et professionnel.
+                    </p>
+                    <div class="pt-2 text-xs text-gold-400/80 italic font-cursive text-lg">
+                        ~ Vœux sincères
+                    </div>
+                </div>
+
+                <!-- Card 2: Metier Dentiste & Sourire -->
+                <div class="glass-card glass-card-hover rounded-3xl p-8 space-y-4 relative overflow-hidden">
+                    <div class="w-12 h-12 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-xl mb-4">
+                        <i class="fas fa-smile-beam"></i>
+                    </div>
+                    <span class="text-xs font-bold text-gold-400 tracking-wider uppercase">Éclat & Passion</span>
+                    <h3 class="font-cinzel text-xl font-bold text-white">Le Plus Beau des Sourires</h3>
+                    <p class="text-pink-100/80 leading-relaxed text-sm">
+                        En tant que dentiste d'exception, vous passez vos journées à perfectionner les sourires des autres. Aujourd'hui, c'est à votre tour de recevoir des milliers de raisons d'être heureuse et souriante !
+                    </p>
+                    <div class="pt-2 text-xs text-gold-400/80 italic font-cursive text-lg">
+                        ~ Brilliance & Bonheur
+                    </div>
+                </div>
+
+                <!-- Card 3: Vœux de Santé & Prospérité -->
+                <div class="glass-card glass-card-hover rounded-3xl p-8 space-y-4 relative overflow-hidden">
+                    <div class="w-12 h-12 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 text-xl mb-4">
+                        <i class="fas fa-star-of-life"></i>
+                    </div>
+                    <span class="text-xs font-bold text-gold-400 tracking-wider uppercase">Santé & Longévité</span>
+                    <h3 class="font-cinzel text-xl font-bold text-white">47 Ans de Grâce</h3>
+                    <p class="text-pink-100/80 leading-relaxed text-sm">
+                        Puisse cette nouvelle bougie vous apporter une santé de fer, une paix d'esprit inestimable et la concrétisation de tous vos projets les plus chers.
+                    </p>
+                    <div class="pt-2 text-xs text-gold-400/80 italic font-cursive text-lg">
+                        ~ Une longue et belle vie
+                    </div>
+                </div>
+
+                <!-- Card 4: Signature / Special Note -->
+                <div class="glass-card glass-card-hover rounded-3xl p-8 space-y-4 relative overflow-hidden border-gold-500/40 bg-gradient-to-br from-burgundy-800/80 to-burgundy-900/90">
+                    <div class="w-12 h-12 rounded-2xl bg-gold-500/20 border border-gold-400 flex items-center justify-center text-gold-300 text-xl mb-4">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <span class="text-xs font-bold text-gold-300 tracking-wider uppercase">Hommage Chaleureux</span>
+                    <h3 class="font-cinzel text-xl font-bold text-white">Joyeux Anniversaire !</h3>
+                    <p class="text-pink-100/90 leading-relaxed text-sm">
+                        En ce jour unique, recevez toute ma considération et mes vœux les plus chaleureux pour un anniversaire aussi exceptionnel que vous.
+                    </p>
+                    <div class="pt-4 border-t border-gold-500/20 flex items-center justify-between">
+                        <span class="text-xs text-pink-300">Avec tout mon respect,</span>
+                        <span class="font-cursive text-2xl text-gold-300 font-bold">Bilal</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- GIFT POPUP TRIGGER SECTION -->
+        <section class="glass-card rounded-3xl p-8 sm:p-10 text-center space-y-6 bg-gradient-to-r from-burgundy-900 via-burgundy-800 to-burgundy-900 border-gold-500/40">
+            <div class="w-16 h-16 mx-auto rounded-full bg-gold-500/10 border border-gold-500/40 flex items-center justify-center text-gold-400 text-3xl animate-bounce">
+                <i class="fas fa-gift"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="font-cinzel text-2xl sm:text-3xl font-bold text-white">Une Surprise Pour Vous</h3>
+                <p class="text-pink-200/80 text-sm max-w-md mx-auto">
+                    Cliquez ci-dessous pour dévoiler votre carte de vœux virtuelle personnalisée.
+                </p>
+            </div>
+            <button onclick="openGiftModal()" class="px-8 py-3.5 rounded-full bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-burgundy-900 font-bold text-sm tracking-wider uppercase shadow-xl hover:scale-105 transition duration-300">
+                <i class="fas fa-box-open mr-2"></i> Découvrir la Carte
+            </button>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="text-center space-y-3 pt-6 border-t border-gold-500/20 text-xs text-pink-300/60">
+            <p class="font-cinzel tracking-widest uppercase">Spécialement Conçu Pour Dr. Kawtar Hrnaf • 11/11</p>
+            <p class="font-cursive text-lg text-gold-400/80">Avec la plus sincère affection — Bilal</p>
+        </footer>
+
+    </div>
+
+    <!-- GIFT MODAL -->
+    <div id="gift-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-card max-w-lg w-full rounded-3xl p-8 text-center space-y-6 border-2 border-gold-500/60 relative transform scale-90 transition-transform duration-300 id-modal-box">
+            
+            <button onclick="closeGiftModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-burgundy-800 text-gold-400 hover:text-white flex items-center justify-center transition">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-gold-600 to-pink-500 p-1 flex items-center justify-center shadow-lg">
+                <div class="w-full h-full rounded-full bg-burgundy-900 flex items-center justify-center text-gold-300 text-3xl">
+                    <i class="fas fa-heart"></i>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <span class="text-xs font-bold text-gold-400 tracking-widest uppercase">11/11 • 47ème Anniversaire</span>
+                <h3 class="font-cinzel text-2xl font-bold text-white">Joyeux Anniversaire Dr. Kawtar !</h3>
+                <p class="text-pink-100/90 text-sm leading-relaxed">
+                    "En cette journée exceptionnelle du 11 novembre, je vous adresse mes félicitations chaleureuses pour vos 47 ans. Merci pour votre gentillesse constante et l'élégance dont vous faites preuve au quotidien."
+                </p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-burgundy-900/60 border border-gold-500/30 text-left space-y-2">
+                <div class="flex items-center gap-3 text-gold-300 text-xs font-semibold">
+                    <i class="fas fa-tooth"></i>
+                    <span>Sourire & Bonheur Éternel</span>
+                </div>
+                <p class="text-xs text-pink-200/70 italic">
+                    Que cette année soit riche en réussites au cabinet et en moments précieux entourée de tous vos proches.
+                </p>
+            </div>
+
+            <div class="pt-2 flex justify-center">
+                <button onclick="closeGiftModal()" class="px-6 py-2.5 rounded-full bg-gold-500 text-burgundy-900 font-bold text-xs uppercase tracking-wider hover:bg-gold-400 transition">
+                    Fermer avec le Sourire
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Floating Sparkles Generator
+        function createSparkles() {
+            const container = document.getElementById('sparkle-container');
+            const sparkleIcons = ['fa-star', 'fa-sparkles', 'fa-heart', 'fa-tooth'];
+            
+            for (let i = 0; i < 30; i++) {
+                const sparkle = document.createElement('i');
+                const randomIcon = sparkleIcons[Math.floor(Math.random() * sparkleIcons.length)];
+                sparkle.className = `fas ${randomIcon} floating-sparkle text-gold-400/40 text-xs sm:text-sm`;
+                sparkle.style.left = `${Math.random() * 100}%`;
+                sparkle.style.animationDuration = `${5 + Math.random() * 8}s`;
+                sparkle.style.animationDelay = `${Math.random() * 5}s`;
+                sparkle.style.fontSize = `${8 + Math.random() * 14}px`;
+                container.appendChild(sparkle);
+            }
+        }
+
+        // CAROUSEL SLIDER LOGIC
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide-item');
+        const dots = document.querySelectorAll('.slide-dot');
+
+        function updateSlider() {
+            slides.forEach((slide, idx) => {
+                if (idx === currentSlide) {
+                    slide.classList.remove('hidden', 'opacity-0', 'scale-95');
+                    slide.classList.add('opacity-100', 'scale-100');
+                } else {
+                    slide.classList.add('hidden', 'opacity-0', 'scale-95');
+                    slide.classList.remove('opacity-100', 'scale-100');
+                }
+            });
+
+            dots.forEach((dot, idx) => {
+                if (idx === currentSlide) {
+                    dot.classList.remove('bg-gold-500/30');
+                    dot.classList.add('bg-gold-400', 'w-6');
+                } else {
+                    dot.classList.add('bg-gold-500/30');
+                    dot.classList.remove('bg-gold-400', 'w-6');
+                }
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateSlider();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            updateSlider();
+        }
+
+        function setSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        // Auto play slides every 6 seconds
+        setInterval(nextSlide, 6000);
+
+        // Candle Blowing Logic
+        let candlesBlown = false;
+
+        function extinguishCandles() {
+            if (candlesBlown) return;
+
+            const flame1 = document.getElementById('flame-1');
+            const flame2 = document.getElementById('flame-2');
+            const flameStar = document.getElementById('flame-star');
+            const instruction = document.getElementById('cake-instruction');
+            const wishBox = document.getElementById('wish-status-box');
+
+            // Hide Flames
+            flame1.classList.add('flame-extinguished');
+            flame2.classList.add('flame-extinguished');
+            if(flameStar) flameStar.classList.add('flame-extinguished');
+
+            // Add Smoke effect
+            createSmoke('flame-1');
+            createSmoke('flame-2');
+
+            candlesBlown = true;
+
+            // Audio synth effect on blow
+            playBlowSound();
+
+            // Fire Confetti Burst
+            triggerConfetti();
+
+            // Update Text UI
+            instruction.innerHTML = `<span class="text-gold-300 font-bold text-lg"><i class="fas fa-check-circle mr-2"></i> Vœu Exaucé ! Joyeux 47ème Anniversaire !</span>`;
+            
+            wishBox.innerHTML = `
+                <div class="p-3 rounded-full bg-gold-500/20 border border-gold-400/40 text-gold-300 text-sm font-semibold flex items-center gap-3 animate-pulse">
+                    <i class="fas fa-gift"></i>
+                    <span>Toutes nos félicitations, Dr. Kawtar !</span>
+                </div>
+            `;
+        }
+
+        function createSmoke(elementId) {
+            const elem = document.getElementById(elementId);
+            if (!elem) return;
+            const smoke = document.createElement('div');
+            smoke.className = 'smoke';
+            elem.parentElement.appendChild(smoke);
+            setTimeout(() => smoke.remove(), 1500);
+        }
+
+        // Trigger Confetti effect
+        function triggerConfetti() {
+            if (typeof confetti === 'function') {
+                const count = 200;
+                const defaults = { origin: { y: 0.7 } };
+
+                function fire(particleRatio, opts) {
+                    confetti(Object.assign({}, defaults, opts, {
+                        particleCount: Math.floor(count * particleRatio),
+                        colors: ['#d4af37', '#f6d365', '#781533', '#ffffff', '#fda085']
+                    }));
+                }
+
+                fire(0.25, { spread: 26, startVelocity: 55 });
+                fire(0.2, { spread: 60 });
+                fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+                fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+                fire(0.1, { spread: 120, startVelocity: 45 });
+            }
+        }
+
+        // Gift Modal Controls
+        function openGiftModal() {
+            const modal = document.getElementById('gift-modal');
+            const box = modal.querySelector('.id-modal-box');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            box.classList.remove('scale-90');
+            box.classList.add('scale-100');
+            triggerConfetti();
+        }
+
+        function closeGiftModal() {
+            const modal = document.getElementById('gift-modal');
+            const box = modal.querySelector('.id-modal-box');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            box.classList.remove('scale-100');
+            box.classList.add('scale-90');
+        }
+
+        // NEW Audio Synthesizer playing an orchestral "Happy Birthday" melody
+        let isAudioPlaying = false;
+        let synth = null;
+
+        function toggleAudio() {
+            const btnText = document.getElementById('music-text');
+            const btnIcon = document.getElementById('music-icon');
+
+            if (!isAudioPlaying) {
+                Tone.start();
+                if (!synth) {
+                    synth = new Tone.PolySynth(Tone.Synth, {
+                        oscillator: { type: "triangle8" },
+                        envelope: { attack: 0.1, decay: 0.4, sustain: 0.5, release: 1.5 }
+                    }).toDestination();
+                    synth.volume.value = -8;
+
+                    // Classic Happy Birthday melody sequence
+                    const happyBirthdayNotes = [
+                        { time: "0:0:0", note: "G4", duration: "8n." },
+                        { time: "0:0:3", note: "G4", duration: "16n" },
+                        { time: "0:1:0", note: "A4", duration: "4n" },
+                        { time: "0:2:0", note: "G4", duration: "4n" },
+                        { time: "0:3:0", note: "C5", duration: "4n" },
+                        { time: "1:0:0", note: "B4", duration: "2n" },
+
+                        { time: "1:2:0", note: "G4", duration: "8n." },
+                        { time: "1:2:3", note: "G4", duration: "16n" },
+                        { time: "1:3:0", note: "A4", duration: "4n" },
+                        { time: "2:0:0", note: "G4", duration: "4n" },
+                        { time: "2:1:0", note: "D5", duration: "4n" },
+                        { time: "2:2:0", note: "C5", duration: "2n" },
+
+                        { time: "3:0:0", note: "G4", duration: "8n." },
+                        { time: "3:0:3", note: "G4", duration: "16n" },
+                        { time: "3:1:0", note: "G5", duration: "4n" },
+                        { time: "3:2:0", note: "E5", duration: "4n" },
+                        { time: "3:3:0", note: "C5", duration: "4n" },
+                        { time: "4:0:0", note: "B4", duration: "4n" },
+                        { time: "4:1:0", note: "A4", duration: "2n" },
+
+                        { time: "4:3:0", note: "F5", duration: "8n." },
+                        { time: "4:3:3", note: "F5", duration: "16n" },
+                        { time: "5:0:0", note: "E5", duration: "4n" },
+                        { time: "5:1:0", note: "C5", duration: "4n" },
+                        { time: "5:2:0", note: "D5", duration: "4n" },
+                        { time: "5:3:0", note: "C5", duration: "1m" }
+                    ];
+
+                    const part = new Tone.Part((time, value) => {
+                        synth.triggerAttackRelease(value.note, value.duration, time);
+                    }, happyBirthdayNotes).start(0);
+
+                    part.loop = true;
+                    part.loopEnd = "7m";
+                }
+
+                Tone.Transport.bpm.value = 95;
+                Tone.Transport.start();
+                isAudioPlaying = true;
+                btnText.textContent = "Musique: Active";
+                btnIcon.className = "fas fa-volume-up text-gold-300";
+            } else {
+                Tone.Transport.stop();
+                isAudioPlaying = false;
+                btnText.textContent = "Mélodie d'Anniversaire";
+                btnIcon.className = "fas fa-music animate-pulse";
+            }
+        }
+
+        function playBlowSound() {
+            try {
+                if (Tone.context.state === 'running') {
+                    const noise = new Tone.NoiseSynth({
+                        envelope: { attack: 0.01, decay: 0.4, sustain: 0 }
+                    }).toDestination();
+                    noise.volume.value = -10;
+                    noise.triggerAttackRelease("8n");
+                }
+            } catch(e) {
+                console.log("Audio play suppressed");
+            }
+        }
+
+        // Initialize on Load
+        window.onload = function() {
+            createSparkles();
+            updateSlider();
+        };
+    </script>
+</body>
+</html>
